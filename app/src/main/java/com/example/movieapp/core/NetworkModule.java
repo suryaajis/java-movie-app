@@ -1,13 +1,16 @@
 package com.example.movieapp.core;
 
+import com.example.movieapp.data.ApiRepository;
 import com.example.movieapp.data.ApiService;
 import com.example.movieapp.utils.Constants;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.components.ActivityComponent;
 import dagger.hilt.components.SingletonComponent;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -27,7 +30,7 @@ public class NetworkModule {
 
   @Singleton
   @Provides
-  public static HttpLoggingInterceptor provideLogginInterceptor() {
+  public static HttpLoggingInterceptor provideLoginInterceptor() {
     return new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
   }
 
@@ -44,5 +47,10 @@ public class NetworkModule {
     return retrofit.create(ApiService.class);
   }
 
+  @Singleton
+  @Provides
+  public static ApiRepository provideApiRepository(ApiService apiService) {
+    return new ApiRepository(apiService);
+  }
 
 }
